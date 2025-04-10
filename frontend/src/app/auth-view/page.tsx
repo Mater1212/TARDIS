@@ -9,7 +9,7 @@ const dummyEvents = [
         id: 1,
         title: 'Campus Yoga',
         description: 'Relax and stretch outdoors.',
-        image: '/event1.png',
+        image: '/yoga.png',
         host: 'UGA Wellness',
         date: 'April 20, 2025',
         location: 'Myers Quad',
@@ -18,11 +18,19 @@ const dummyEvents = [
         id: 2,
         title: 'Hackathon 2025',
         description: '24-hour coding challenge!',
-        image: '/event2.png',
+        image: '/UGA Hack.png',
         host: 'UGA CS',
         date: 'April 27, 2025',
         location: 'Driftmier',
-    },
+    }, {
+        id: 3,
+        title: 'Iron Man 5K',
+        description: 'Come out and run with us!',
+        image: '/5K.png',
+        host: 'UGA Student Recreation',
+        date: 'April 30, 2025',
+        location: 'Ramsey',
+    }
 ];
 
 export default function AuthenticatedView() {

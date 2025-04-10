@@ -29,7 +29,7 @@ export default function Navbar() {
             <div className="flex gap-4 items-center">
                 {isLoggedIn ? (
                     <>
-                        <span className="text-sm">Hi, {userName}</span>
+                        <span className="text-sm, text-black">Hi, {userName}!</span>
                         <Link href="/add-event" className="text-blue-600">Add Event</Link>
                         <button onClick={handleLogout} className="text-red-500">Logout</button>
                     </>

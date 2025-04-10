@@ -35,6 +35,35 @@ const dummyEvents = [
         location: 'Downtown Athens',
         category: 'upcoming',
     },
+    {
+        id: 4,
+        title: 'Campus Yoga',
+        description: 'Relax and stretch outdoors.',
+        image: '/yoga.png',
+        host: 'UGA Wellness',
+        date: 'April 20, 2025',
+        location: 'Myers Quad',
+        category: 'new',
+    },
+    {
+        id: 5,
+        title: 'Hackathon 2025',
+        description: '24-hour coding challenge!',
+        image: '/UGA Hack.png',
+        host: 'UGA CS',
+        date: 'April 27, 2025',
+        location: 'Driftmier',
+        category: 'upcoming',
+    }, {
+        id: 6,
+        title: 'Iron Man 5K',
+        description: 'Come out and run with us!',
+        image: '/5K.png',
+        host: 'UGA Student Recreation',
+        date: 'April 30, 2025',
+        location: 'Ramsey',
+        category: 'upcoming',
+    }
 ];
 
 export default function EventsPage() {
