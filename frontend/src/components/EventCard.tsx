@@ -13,10 +13,10 @@ export default function EventCard({ event }: { event: any }) {
                     className="rounded-lg object-cover"
                 />
                 <div>
-                    <h2 className="text-2xl font-bold mb-2">{event.title}</h2>
-                    <p className="text-sm text-gray-600 mb-1">Hosted by: {event.host || 'UGA'}</p>
-                    <p className="text-sm text-gray-500 mb-2">{event.date} at {event.location}</p>
-                    <p className="text-gray-700 mb-2">{event.description}</p>
+                    <h2 className="text-2xl font-bold text-black mb-2">{event.title}</h2>
+                    <p className="text-sm text-black mb-1">Hosted by: {event.host || 'UGA'}</p>
+                    <p className="text-sm text-black mb-2">{event.date} at {event.location}</p>
+                    <p className="text-black mb-2">{event.description}</p>
                     <button className="text-blue-600 font-semibold hover:underline">Learn More</button>
                 </div>
             </div>

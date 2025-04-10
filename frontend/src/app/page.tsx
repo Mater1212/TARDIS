@@ -23,7 +23,7 @@ export default function HomePage() {
           />
         </div>
 
-        <Link href="/signup">
+        <Link href="/events">
           <div className="bg-white text-[#B42B2B] text-center font-bold px-10 py-4 rounded-2xl shadow-lg flex items-center gap-2 hover:bg-gray-100">
             DISCOVER AND ADD EVENTS NOW!
             <span className="text-2xl">→</span>

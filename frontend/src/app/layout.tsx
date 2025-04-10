@@ -1,6 +1,4 @@
-// src/app/layout.tsx
 import './globals.css'
-import { AuthProvider } from '../contexts/AuthContext'
 
 export const metadata = {
   title: 'UGA Event Hub',
@@ -15,9 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        {children}
       </body>
     </html>
   )
