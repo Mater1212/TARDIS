@@ -35,7 +35,7 @@ export default function EventCard({ event }: { event: any }) {
           </p>
           <p className="text-black mb-2">{event.description}</p>
         </div>
-        <button className="text-blue-600 font-semibold hover:underline self-start">
+        <button className="bg-red-700 text-white text-sm font-medium px-4 py-1 rounded-full hover:bg-red-800 transition w-fit">
           Learn More
         </button>
       </div>

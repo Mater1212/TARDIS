@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Navbar from '@/components/NavBar';
 import EventCard from '@/components/EventCard';
+import Navbar from '@/components/NavBar';
 
 type EventType = {
   _id: string;
@@ -12,12 +12,14 @@ type EventType = {
   date: string;
   time: string;
   imageUrl?: string;
-  attendees?: string[]; // assuming it's an array of user IDs
+  attendees?: string[];
   createdAt?: string;
+  host?: string;
 };
 
 export default function EventsPage() {
   const [events, setEvents] = useState<EventType[]>([]);
+  const [selectedTab, setSelectedTab] = useState<'popular' | 'new' | 'upcoming'>('popular');
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -33,41 +35,77 @@ export default function EventsPage() {
     fetchEvents();
   }, []);
 
-  const newEvents = [...events].sort((a, b) =>
-    new Date(b.createdAt ?? '').getTime() - new Date(a.createdAt ?? '').getTime()
-  );
+  const getSortedEvents = () => {
+    if (selectedTab === 'new') {
+      return [...events].sort(
+        (a, b) => new Date(b.createdAt ?? '').getTime() - new Date(a.createdAt ?? '').getTime()
+      );
+    } else if (selectedTab === 'upcoming') {
+      return [...events].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+    } else {
+      return [...events].sort(
+        (a, b) => (b.attendees?.length ?? 0) - (a.attendees?.length ?? 0)
+      );
+    }
+  };
 
-  const upcomingEvents = [...events].sort((a, b) =>
-    new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
-
-  const popularEvents = [...events].sort((a, b) =>
-    (b.attendees?.length ?? 0) - (a.attendees?.length ?? 0)
-  );
+  const sortedEvents = getSortedEvents();
 
   return (
-    <div>
-      <Navbar />
-      <main className="px-4 max-w-4xl mx-auto pb-16">
-        <h1 className="text-3xl font-bold text-center mt-6 mb-10">Explore Events</h1>
+    <div className="min-h-screen">
+      {/* Sticky NavBar */}
+      <header className="sticky top-0 z-50 bg-red-700 shadow-md">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 text-white">
+          <h1 className="text-2xl font-bold">UGA EVENT HUB</h1>
+          <div>
+            <a href="#" className="mr-4 hover:underline">Sign Up</a>
+            <a href="#" className="hover:underline">Log In</a>
+          </div>
+        </div>
+      </header>
 
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold text-red-700 mb-4">POPULAR EVENTS</h2>
-          {popularEvents.slice(0, 5).map(event => (
-            <EventCard key={event._id} event={event} />
-          ))}
-        </section>
+      <main className="flex max-w-7xl mx-auto px-6 py-10 gap-8">
+        {/* Sticky Centered Sidebar Filters with border */}
+        <aside className="sticky top-1/4 h-fit self-start pr-6 border-r border-gray-300">
+          <div className="flex flex-col gap-4 items-start">
+            <button
+              onClick={() => setSelectedTab('popular')}
+              className={`px-4 py-2 rounded-full border w-40 text-left transition ${
+                selectedTab === 'popular' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
+              }`}
+            >
+              TOP EVENTS
+            </button>
+            <button
+              onClick={() => setSelectedTab('new')}
+              className={`px-4 py-2 rounded-full border w-40 text-left transition ${
+                selectedTab === 'new' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
+              }`}
+            >
+              NEWLY ADDED
+            </button>
+            <button
+              onClick={() => setSelectedTab('upcoming')}
+              className={`px-4 py-2 rounded-full border w-40 text-left transition ${
+                selectedTab === 'upcoming' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
+              }`}
+            >
+              COMING UP
+            </button>
+          </div>
+        </aside>
 
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold text-red-700 mb-4">NEWLY ADDED</h2>
-          {newEvents.slice(0, 5).map(event => (
-            <EventCard key={event._id} event={event} />
-          ))}
-        </section>
+        {/* Event Feed */}
+        <section className="flex-1">
+          <h2 className="text-3xl font-bold mb-6">
+            {selectedTab === 'popular' && 'Top Events'}
+            {selectedTab === 'new' && 'Newly Added'}
+            {selectedTab === 'upcoming' && 'Coming Up'}
+          </h2>
 
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold text-red-700 mb-4">COMING UP</h2>
-          {upcomingEvents.slice(0, 5).map(event => (
+          {sortedEvents.map(event => (
             <EventCard key={event._id} event={event} />
           ))}
         </section>
