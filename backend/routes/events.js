@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Event = require('../models/Event');
-console.log('Event model:', Event);
 
 // GET all events
 router.get('/', async (req, res) => {
@@ -10,6 +9,17 @@ router.get('/', async (req, res) => {
     res.json(events);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// GET event by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) return res.status(404).json({ message: 'Event not found' });
+    res.json(event);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error fetching event by ID' });
   }
 });
 

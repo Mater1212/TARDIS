@@ -1,7 +1,24 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
-export default function EventCard({ event }: { event: any }) {
+interface EventCardProps {
+  event: {
+    _id: string;
+    title: string;
+    description: string;
+    location: string;
+    date: string;
+    time: string;
+    imageUrl?: string;
+    attendees?: string[];
+    createdAt?: string;
+    host?: string;
+  };
+  isLoggedIn?: boolean; // still accepted for future use
+}
+
+export default function EventCard({ event }: EventCardProps) {
   const eventDate = new Date(event.date);
   const formattedDate = eventDate.toLocaleDateString(undefined, {
     weekday: 'short',
@@ -35,9 +52,13 @@ export default function EventCard({ event }: { event: any }) {
           </p>
           <p className="text-black mb-2">{event.description}</p>
         </div>
-        <button className="bg-red-700 text-white text-sm font-medium px-4 py-1 rounded-full hover:bg-red-800 transition w-fit">
-          Learn More
-        </button>
+
+        {/* ✅ Wrap the button with Link to individual event page */}
+        <Link href={`/events/${event._id}`}>
+          <button className="bg-red-700 text-white text-sm font-medium px-4 py-1 rounded-full hover:bg-red-800 transition w-fit mt-2">
+            Learn More
+          </button>
+        </Link>
       </div>
     </div>
   );

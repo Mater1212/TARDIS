@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from 'react';
 import EventCard from '@/components/EventCard';
@@ -20,6 +20,8 @@ type EventType = {
 export default function EventsPage() {
   const [events, setEvents] = useState<EventType[]>([]);
   const [selectedTab, setSelectedTab] = useState<'popular' | 'new' | 'upcoming'>('popular');
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // toggle for testing
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -33,6 +35,9 @@ export default function EventsPage() {
     };
 
     fetchEvents();
+
+    const name = localStorage.getItem('userName') || '';
+    setUserName(name.split(' ')[0]);
   }, []);
 
   const getSortedEvents = () => {
@@ -60,14 +65,24 @@ export default function EventsPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 text-white">
           <h1 className="text-2xl font-bold">UGA EVENT HUB</h1>
           <div>
-            <a href="#" className="mr-4 hover:underline">Sign Up</a>
-            <a href="#" className="hover:underline">Log In</a>
+            {isLoggedIn ? (
+              <>
+                <span className="mr-4">Hi, {userName || 'User'}!</span>
+                <a href="/profile" className="mr-4 hover:underline">Profile</a>
+                <button onClick={() => setIsLoggedIn(false)} className="hover:underline">Logout</button>
+              </>
+            ) : (
+              <>
+                <a href="#" className="mr-4 hover:underline">Sign Up</a>
+                <button onClick={() => setIsLoggedIn(true)} className="hover:underline">Log In</button>
+              </>
+            )}
           </div>
         </div>
       </header>
 
       <main className="flex max-w-7xl mx-auto px-6 py-10 gap-8">
-        {/* Sticky Centered Sidebar Filters with border */}
+        {/* Sidebar Filters */}
         <aside className="sticky top-1/4 h-fit self-start pr-6 border-r border-gray-300">
           <div className="flex flex-col gap-4 items-start">
             <button
@@ -105,8 +120,19 @@ export default function EventsPage() {
             {selectedTab === 'upcoming' && 'Coming Up'}
           </h2>
 
+          {isLoggedIn && (
+            <div className="text-right mb-6">
+              <a
+                href="/add-event"
+                className="bg-red-700 text-white px-6 py-2 rounded-md font-bold hover:bg-red-800"
+              >
+                Add New Event
+              </a>
+            </div>
+          )}
+
           {sortedEvents.map(event => (
-            <EventCard key={event._id} event={event} />
+            <EventCard key={event._id} event={event} isLoggedIn={isLoggedIn} />
           ))}
         </section>
       </main>
