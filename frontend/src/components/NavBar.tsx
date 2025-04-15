@@ -10,6 +10,8 @@ export default function Navbar() {
         const name = localStorage.getItem('userName');
         if (name) {
             setUserName(name.split(' ')[0]);
+        } else {
+            setUserName(null);
         }
     }, []);
 
@@ -36,7 +38,16 @@ export default function Navbar() {
                 ) : (
                     <>
                         <Link href="/signup" className="text-blue-600">Sign Up</Link>
-                        <Link href="/auth-view" className="text-blue-600">Log In</Link>
+                        <button
+                            onClick={() => {
+                                localStorage.setItem('userName', 'User');
+                                window.location.href = '/events';
+                            }}
+                            className="text-blue-600 hover:underline"
+                        >
+                            Log In
+                        </button>
+
                     </>
                 )}
             </div>

@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import EventCard from '@/components/EventCard';
 import Navbar from '@/components/NavBar';
+import Link from 'next/link';
+
 
 type EventType = {
   _id: string;
@@ -20,7 +22,7 @@ type EventType = {
 export default function EventsPage() {
   const [events, setEvents] = useState<EventType[]>([]);
   const [selectedTab, setSelectedTab] = useState<'popular' | 'new' | 'upcoming'>('popular');
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // toggle for testing
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -63,7 +65,9 @@ export default function EventsPage() {
       {/* Sticky NavBar */}
       <header className="sticky top-0 z-50 bg-red-700 shadow-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 text-white">
-          <h1 className="text-2xl font-bold">UGA EVENT HUB</h1>
+          <Link href="/" className="text-2xl font-bold hover:underline">
+            UGA EVENT HUB
+          </Link>
           <div>
             {isLoggedIn ? (
               <>
@@ -87,25 +91,22 @@ export default function EventsPage() {
           <div className="flex flex-col gap-4 items-start">
             <button
               onClick={() => setSelectedTab('popular')}
-              className={`px-4 py-2 rounded-full border w-40 text-left transition ${
-                selectedTab === 'popular' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
-              }`}
+              className={`px-4 py-2 rounded-full border w-40 text-left transition ${selectedTab === 'popular' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
+                }`}
             >
               TOP EVENTS
             </button>
             <button
               onClick={() => setSelectedTab('new')}
-              className={`px-4 py-2 rounded-full border w-40 text-left transition ${
-                selectedTab === 'new' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
-              }`}
+              className={`px-4 py-2 rounded-full border w-40 text-left transition ${selectedTab === 'new' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
+                }`}
             >
               NEWLY ADDED
             </button>
             <button
               onClick={() => setSelectedTab('upcoming')}
-              className={`px-4 py-2 rounded-full border w-40 text-left transition ${
-                selectedTab === 'upcoming' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
-              }`}
+              className={`px-4 py-2 rounded-full border w-40 text-left transition ${selectedTab === 'upcoming' ? 'bg-red-700 text-white font-semibold' : 'bg-white text-red-700 border-red-700 hover:bg-red-100'
+                }`}
             >
               COMING UP
             </button>
