@@ -15,8 +15,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const login = (userData: any) => {
-        localStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
+        const firstName = userData.fullName?.split(' ')[0] || 'User';
+        const userWithFirst = { ...userData, firstName };
+
+        console.log("Logging in with userData:", userData);
+
+        localStorage.setItem('user', JSON.stringify(userWithFirst));
+        setUser(userWithFirst);
         router.push('/');
     };
 

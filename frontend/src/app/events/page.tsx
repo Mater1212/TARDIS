@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import EventCard from '@/components/EventCard';
-import Navbar from '@/components/NavBar'; 
+import Navbar from '@/components/NavBar';
 import Link from 'next/link';
 
 type EventType = {

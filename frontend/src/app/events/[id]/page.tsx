@@ -44,8 +44,22 @@ export default function EventDetailsPage() {
       <p className="text-black mb-4">{event.description}</p>
 
       <div className="flex gap-4">
-        <button className="border px-4 py-2 rounded hover:bg-gray-100">Message the Host</button>
-        <button className="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800">RSVP</button>
+        <button
+          onClick={() => {
+            const joined = JSON.parse(localStorage.getItem('joinedEvents') || '[]');
+            if (!joined.includes(event._id)) {
+              joined.push(event._id);
+              localStorage.setItem('joinedEvents', JSON.stringify(joined));
+              alert('RSVP confirmed!');
+            } else {
+              alert('You already RSVP’d to this event.');
+            }
+          }}
+          className="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800"
+        >
+          RSVP
+        </button>
+
       </div>
 
       <div className="mt-4 text-sm text-gray-500">

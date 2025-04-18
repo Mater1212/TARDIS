@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/NavBar';
+import { AuthContext } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useContext(AuthContext);
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -37,9 +40,7 @@ export default function LoginPage() {
       if (!res.ok) {
         setError(data.error || 'Login failed');
       } else {
-        // Save name to localStorage to simulate login state
-        localStorage.setItem('userName', data.fullName);
-        router.push('/events'); // redirect to events page
+        login(data);
       }
     } catch (err) {
       console.error(err);
