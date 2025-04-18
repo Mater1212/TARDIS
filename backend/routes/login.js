@@ -29,7 +29,9 @@ router.post('/', async (req, res) => {
     //Return user info (no password)
     res.status(200).json({
       message: 'Login successful',
-      fullName: `${user.firstName} ${user.lastName}`
+      fullName: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      phone: user.phone
     });
 
   } catch (err) {
