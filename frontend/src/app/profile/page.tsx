@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/contexts/AuthContext';
 import Navbar from '@/components/NavBar';
 import EventCard from '@/components/EventCard';
-import Link from 'next/link';
 
 type EventType = {
     _id: string;
@@ -39,7 +38,7 @@ export default function ProfilePage() {
     useEffect(() => {
         const fetchMyEvents = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/events?createdBy=${user?.email}`);
+                const res = await fetch(`http://localhost:5000/api/events/created-by/${user?.email}`);
                 const data = await res.json();
                 setMyEvents(data);
             } catch (err) {
@@ -59,7 +58,11 @@ export default function ProfilePage() {
                 try {
                     const res = await fetch(`http://localhost:5000/api/events/${id}`);
                     const data = await res.json();
-                    fetched.push(data);
+
+                    // Ensure user is actually an attendee
+                    if (data.attendees?.includes(user?.email)) {
+                        fetched.push(data);
+                    }
                 } catch (err) {
                     console.error('Failed to fetch joined event:', err);
                 }
@@ -68,8 +71,8 @@ export default function ProfilePage() {
             setJoinedEvents(fetched);
         };
 
-        fetchJoinedEvents();
-    }, []);
+        if (user?.email) fetchJoinedEvents();
+    }, [user?.email]);
 
     if (!user) {
         return <p className="text-center mt-10">Loading user info...</p>;
@@ -83,18 +86,11 @@ export default function ProfilePage() {
                 {/* Sidebar */}
                 <aside className="w-64 pr-6 border-r space-y-4">
                     <button
-                        onClick={() => router.push('/events')}
-                        className="w-full py-2 px-4 text-left bg-gray-100 hover:bg-gray-200 border rounded transition"
-                    >
-                        ALL EVENTS <span className="float-right">{'>'}</span>
-                    </button>
-
-                    {/* <button
                         onClick={() => setActiveTab('profile')}
                         className="w-full py-2 px-4 text-left bg-gray-100 hover:bg-gray-200 border rounded transition"
                     >
-                        ACCOUNT <span className="float-right">{'>'}</span>
-                    </button> */}
+                        PROFILE <span className="float-right">{'>'}</span>
+                    </button>
 
                     <button
                         onClick={() => setActiveTab('myEvents')}
@@ -123,18 +119,8 @@ export default function ProfilePage() {
                                     {profileImage ? (
                                         <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
                                     ) : (
-                                        <svg
-                                            className="w-16 h-16 text-gray-400"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                                            />
+                                        <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                                         </svg>
                                     )}
                                 </div>
@@ -153,15 +139,9 @@ export default function ProfilePage() {
                             {/* Personal Info */}
                             <div className="border-t pt-6 space-y-4">
                                 <h2 className="text-lg font-bold text-[#B42B2B] uppercase">Personal Information</h2>
-                                <p className="text-black">
-                                    <strong>Full Name:</strong> {user.fullName || '—'}
-                                </p>
-                                <p className="text-black">
-                                    <strong>Phone Number:</strong> {user.phone || '—'}
-                                </p>
-                                <p className="text-black">
-                                    <strong>Email:</strong> {user.email || '—'}
-                                </p>
+                                <p className="text-black"><strong>Full Name:</strong> {user.fullName || '—'}</p>
+                                <p className="text-black"><strong>Phone Number:</strong> {user.phone || '—'}</p>
+                                <p className="text-black"><strong>Email:</strong> {user.email || '—'}</p>
 
                                 <button
                                     onClick={logout}

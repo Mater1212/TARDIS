@@ -41,7 +41,7 @@ export default function AddEventPage() {
     const payload = {
       ...formData,
       capacity: parseInt(formData.capacity),
-      createdBy: user.email, // ✅ track the user who created this
+      createdBy: user.email,
     };
 
     try {
@@ -85,7 +85,9 @@ export default function AddEventPage() {
             onChange={handleChange}
             placeholder="Description"
             required
-            className="w-full border p-2 rounded text-black"
+            rows={6}
+            style={{ whiteSpace: 'pre-line' }}
+            className="w-full border p-2 rounded text-black resize-none"
           />
           <div className="flex gap-4">
             <input

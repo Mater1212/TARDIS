@@ -12,6 +12,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET events created by a specific user (by email)
+router.get('/created-by/:email', async (req, res) => {
+  try {
+    const events = await Event.find({ createdBy: req.params.email });
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch events by user' });
+  }
+});
+
 // GET event by ID
 router.get('/:id', async (req, res) => {
   try {
