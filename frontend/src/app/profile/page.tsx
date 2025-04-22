@@ -200,6 +200,7 @@ export default function ProfilePage() {
                                         isLoggedIn={true}
                                         showDelete={true}
                                         onDelete={handleDelete}
+                                        showEdit={true}
                                     />
                                 ))
 

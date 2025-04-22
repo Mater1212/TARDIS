@@ -7,10 +7,11 @@ type Props = {
   event: any;
   isLoggedIn: boolean;
   showDelete?: boolean;
+  showEdit?: boolean;
   onDelete?: (id: string) => void;
 };
 
-export default function EventCard({ event, isLoggedIn, showDelete, onDelete }: Props) {
+export default function EventCard({ event, isLoggedIn, showDelete, showEdit, onDelete }: Props) {
   return (
     <div className="max-w-3xl mx-auto border rounded-md p-4 shadow-sm bg-white flex gap-4 md:flex-row flex-col">
       {/* Image: consistent size */}
@@ -45,14 +46,24 @@ export default function EventCard({ event, isLoggedIn, showDelete, onDelete }: P
             </span>
           </Link>
 
-          {showDelete && (
-            <button
-              onClick={() => onDelete?.(event._id)}
-              className="text-sm text-red-600 font-semibold hover:underline"
-            >
-              Delete
-            </button>
-          )}
+          <div className="flex gap-4">
+            {showEdit && (
+              <Link
+                href={`/events/${event._id}/edit`}
+                className="text-sm text-blue-600 font-semibold hover:underline"
+              >
+                Edit
+              </Link>
+            )}
+            {showDelete && (
+              <button
+                onClick={() => onDelete?.(event._id)}
+                className="text-sm text-red-600 font-semibold hover:underline"
+              >
+                Delete
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
