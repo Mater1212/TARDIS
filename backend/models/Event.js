@@ -14,7 +14,7 @@ const EventSchema = new mongoose.Schema(
       default: 'open'
     },
     attendees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    createdBy: { type: String, required: true }, // ✅ changed from ObjectId to String
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     imageUrl: String
   },
   {

@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
 
     //Return user info (no password)
     res.status(200).json({
-      message: 'Login successful',
+      _id: user._id,
       fullName: `${user.firstName} ${user.lastName}`,
       email: user.email,
       phone: user.phone
