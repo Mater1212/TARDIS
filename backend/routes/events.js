@@ -97,5 +97,25 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Edit/update event (creator only)
+router.put('/:id', async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+
+    if (event.createdBy.toString() !== userId) {
+      return res.status(403).json({ error: 'Not authorized to edit this event' });
+    }
+
+    Object.assign(event, req.body);
+    await event.save();
+    res.json({ message: 'Event updated successfully', event });
+  } catch (err) {
+    console.error('Edit event error:', err);
+    res.status(500).json({ error: 'Failed to update event' });
+  }
+});
 
 module.exports = router;
