@@ -35,44 +35,72 @@ export default function ProfilePage() {
         }
     };
 
+    // Handle deleting user-owned events
+    const handleDelete = async (eventId: string) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this event?');
+        if (!confirmDelete) return;
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: user._id }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Failed to delete event');
+
+            setMyEvents(prev => prev.filter(e => e._id !== eventId));
+        } catch (err) {
+            console.error('Delete error:', err);
+            alert('Server error while deleting event');
+        }
+    };
+
+
     useEffect(() => {
         const fetchMyEvents = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/events/created-by/${user?.email}`);
-                const data = await res.json();
-                setMyEvents(data);
+                const res = await fetch('http://localhost:5000/api/events');
+                const allEvents = await res.json();
+
+                const mine = allEvents.filter((event: any) =>
+                    event.createdBy === user._id || event.createdBy?._id === user._id
+                );
+
+                setMyEvents(mine);
             } catch (err) {
                 console.error('Failed to fetch user events:', err);
             }
         };
 
-        if (user?.email) fetchMyEvents();
-    }, [user?.email]);
+        if (user?._id) fetchMyEvents();
+    }, [user?._id]);
+
 
     useEffect(() => {
         const fetchJoinedEvents = async () => {
-            const storedIds = JSON.parse(localStorage.getItem('joinedEvents') || '[]');
-            const fetched: EventType[] = [];
+            try {
+                const res = await fetch('http://localhost:5000/api/events');
+                const allEvents = await res.json();
 
-            for (const id of storedIds) {
-                try {
-                    const res = await fetch(`http://localhost:5000/api/events/${id}`);
-                    const data = await res.json();
+                const joined = allEvents.filter((event: any) =>
+                    event.attendees?.some((attendee: any) =>
+                        typeof attendee === 'object'
+                            ? attendee._id === user._id
+                            : attendee === user._id
+                    )
+                );
 
-                    // Ensure user is actually an attendee
-                    if (data.attendees?.includes(user?.email)) {
-                        fetched.push(data);
-                    }
-                } catch (err) {
-                    console.error('Failed to fetch joined event:', err);
-                }
+                setJoinedEvents(joined);
+            } catch (err) {
+                console.error('Failed to fetch joined events:', err);
             }
-
-            setJoinedEvents(fetched);
         };
 
-        if (user?.email) fetchJoinedEvents();
-    }, [user?.email]);
+        if (user?._id) fetchJoinedEvents();
+    }, [user?._id]);
+
 
     if (!user) {
         return <p className="text-center mt-10">Loading user info...</p>;
@@ -108,8 +136,8 @@ export default function ProfilePage() {
                     <button
                         onClick={() => window.location.href = '/events'}
                         className="w-full py-2 px-4 text-center bg-gray-100 hover:bg-gray-200 border rounded transition"
-                        >
-                          <span className="float-left">{'<'}</span> Back to Events
+                    >
+                        <span className="float-left">{'<'}</span> Back to Events
                     </button>
                 </aside>
 
@@ -166,8 +194,15 @@ export default function ProfilePage() {
                                 <p>No events created yet.</p>
                             ) : (
                                 myEvents.map(event => (
-                                    <EventCard key={event._id} event={event} isLoggedIn={true} />
+                                    <EventCard
+                                        key={event._id}
+                                        event={event}
+                                        isLoggedIn={true}
+                                        showDelete={true}
+                                        onDelete={handleDelete}
+                                    />
                                 ))
+
                             )}
                         </div>
                     )}

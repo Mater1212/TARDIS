@@ -1,68 +1,59 @@
+'use client';
+
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 
-interface EventCardProps {
-  event: {
-    _id: string;
-    title: string;
-    description: string;
-    location: string;
-    date: string;
-    time: string;
-    imageUrl?: string;
-    attendees?: string[];
-    createdAt?: string;
-    host?: string;
-  };
-  isLoggedIn?: boolean;
-}
+type Props = {
+  event: any;
+  isLoggedIn: boolean;
+  showDelete?: boolean;
+  onDelete?: (id: string) => void;
+};
 
-export default function EventCard({ event }: EventCardProps) {
-  const eventDate = new Date(event.date);
-  const formattedDate = eventDate.toLocaleDateString(undefined, {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-
-  const formattedTime = eventDate.toLocaleTimeString(undefined, {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
-  const shortDescription =
-    event.description.length > 150
-      ? `${event.description.slice(0, 150).trim()}...`
-      : event.description;
-
+export default function EventCard({ event, isLoggedIn, showDelete, onDelete }: Props) {
   return (
-    <div className="border p-4 rounded-xl shadow-md mb-6 max-w-2xl mx-auto bg-white flex gap-4">
-      <div className="w-40 h-40 relative flex-shrink-0">
-        <Image
-          src={event.imageUrl || '/event-placeholder.jpg'}
+    <div className="max-w-3xl mx-auto border rounded-md p-4 shadow-sm bg-white flex gap-4 md:flex-row flex-col">
+      {/* Image: consistent size */}
+      {event.imageUrl && (
+        <img
+          src={event.imageUrl}
           alt={event.title}
-          fill
-          className="rounded-lg object-cover"
+          className="w-full md:w-48 h-32 object-cover rounded-md"
         />
-      </div>
+      )}
 
-      <div className="flex flex-col justify-between flex-1">
+      {/* Content */}
+      <div className="flex-1 flex flex-col justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-black mb-1">{event.title}</h2>
-          <p className="text-sm text-gray-600 mb-1">Hosted by: {event.host || 'UGA'}</p>
-          <p className="text-sm text-gray-600 mb-2">
-            {formattedDate} at {formattedTime} · {event.location}
+          <h3 className="text-lg font-bold text-[#B42B2B] mb-1">{event.title}</h3>
+          <p className="text-xs text-gray-500 mb-1">
+            {new Date(event.date).toLocaleDateString()} @ {event.time} • {event.location}
           </p>
-          <p className="text-black mb-2">{shortDescription}</p>
+          <p className="text-sm text-gray-700 mb-1 line-clamp-2">
+            {event.description}
+          </p>
+          <p className="text-xs text-gray-500">
+            Attendees: {event.attendees?.length ?? 0} / {event.capacity ?? '∞'}
+          </p>
         </div>
 
-        <Link href={`/events/${event._id}`}>
-          <button className="bg-red-700 text-white text-sm font-medium px-4 py-1 rounded-full hover:bg-red-800 transition w-fit mt-2">
-            Learn More
-          </button>
-        </Link>
+        {/* Actions */}
+        <div className="flex justify-between items-center mt-3">
+          <Link href={`/events/${event._id}`}>
+            <span className="text-sm text-blue-600 font-semibold hover:underline">
+              Learn More →
+            </span>
+          </Link>
+
+          {showDelete && (
+            <button
+              onClick={() => onDelete?.(event._id)}
+              className="text-sm text-red-600 font-semibold hover:underline"
+            >
+              Delete
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
