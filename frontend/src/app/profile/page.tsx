@@ -158,15 +158,15 @@ export default function ProfilePage() {
                                         </svg>
                                     )}
                                 </div>
-                                <label className="mt-4 cursor-pointer text-sm bg-gray-200 py-1 px-3 rounded hover:bg-gray-300">
-                                    Upload New Photo
+                                <div className="mt-4 w-full max-w-xs">
                                     <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageUpload}
-                                        className="hidden"
+                                        type="text"
+                                        placeholder="Enter image URL"
+                                        onChange={(e) => setProfileImage(e.target.value)}
+                                        className="w-full border px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#B42B2B]"
                                     />
-                                </label>
+                                    <p className="text-xs mt-1 text-gray-500">Must be a direct image link (e.g. ends in .jpg, .png).</p>
+                                </div>
                                 <p className="text-xs mt-1 text-gray-500">At least 200x200px. JPG or PNG is allowed.</p>
                             </div>
 

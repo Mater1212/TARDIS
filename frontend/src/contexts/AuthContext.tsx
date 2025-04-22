@@ -22,12 +22,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         localStorage.setItem('user', JSON.stringify(userWithFirst));
         setUser(userWithFirst);
+
+        //Set cookie for middleware (1 hour expiration)
+        document.cookie = 'user=true; path=/';
+
         router.push('/');
     };
 
     const logout = () => {
         localStorage.removeItem('user');
         setUser(null);
+
+        //Expire the cookie
+        document.cookie = 'user=; Max-Age=0; path=/';
+
         router.push('/login');
     };
 

@@ -4,6 +4,9 @@ import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/NavBar';
 import { AuthContext } from '@/contexts/AuthContext';
+import LocationAutocomplete from '@/components/LocationAutocomplete';
+
+console.log('🧪 LocationAutocomplete:', LocationAutocomplete); // Debug log
 
 export default function AddEventPage() {
   const router = useRouter();
@@ -23,7 +26,7 @@ export default function AddEventPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -113,14 +116,15 @@ export default function AddEventPage() {
               className="flex-1 border p-2 rounded text-black"
             />
           </div>
-          <input
-            name="location"
+
+          {/* 🔍 Autocomplete location input */}
+          <LocationAutocomplete
             value={formData.location}
-            onChange={handleChange}
-            placeholder="Location"
-            required
-            className="w-full border p-2 rounded text-black"
+            onChange={(val) =>
+              setFormData((prev) => ({ ...prev, location: val }))
+            }
           />
+
           <input
             name="imageUrl"
             value={formData.imageUrl}
