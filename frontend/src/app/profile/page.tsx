@@ -105,6 +105,12 @@ export default function ProfilePage() {
                     >
                         JOINED EVENTS <span className="float-right">{'>'}</span>
                     </button>
+                    <button
+                        onClick={() => window.location.href = '/events'}
+                        className="w-full py-2 px-4 text-center bg-gray-100 hover:bg-gray-200 border rounded transition"
+                        >
+                          <span className="float-left">{'<'}</span> Back to Events
+                    </button>
                 </aside>
 
                 {/* Main Content */}
