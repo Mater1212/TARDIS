@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-console.log("🧪 Loaded env key:", process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY);
+console.log("Loaded env key:", process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY);
 
 export default function LocationAutocomplete({
   value,
@@ -27,7 +27,7 @@ export default function LocationAutocomplete({
           );
           const data = await res.json();
 
-          console.log('🧪 Geoapify raw response:', data); // Debug log
+          console.log('Geoapify raw response:', data); // Debug log
 
           if (!data.features || !Array.isArray(data.features)) {
             console.warn('⚠️ No features returned from Geoapify', data);

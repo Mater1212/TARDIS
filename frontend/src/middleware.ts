@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
   const userCookie = request.cookies.get('user')?.value;
 
-  console.log('🧪 middleware:', { currentPath, userCookie });
+  console.log('middleware:', { currentPath, userCookie });
 
   const isProtected = protectedPaths.some(path =>
     currentPath.startsWith(path)
