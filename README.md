@@ -1,18 +1,93 @@
-The overall purpose of the UGA Event Hub is to provide UGA students and
-Staff with a centralized platform to discover, create, and manage campus and local events.
+UGA Event Hub is a full-stack web application that allows University of Georgia (UGA) students to create, explore, and RSVP to campus and local events. Built using the Next.js App Router, Express.js, and MongoDB, the platform includes user authentication, email verification, profile management, and role-based access to event tools.
 
-Our website ensures this by verifying users through a login system as well as sending a multifactor
-verification e-mail to their provided UGA e-mail on sign-up. This ensures that all users creating and editing events
-are part of the UGA community, giving added security for users registering for these events. Furthermore, our web page has a view
-for non-registered/verified users, allowing them to see the created events. But registered/verified users will be able to RSVP for the created
-events. As well as having the ability to create, edit, and delete their own events.
+Features
 
-When it comes to user profiles. Our users can view their profile, see what events they have created, and look at all their
-events they have registered for. With the dedicated three-tab layout, your profiles tab is a dedicated space for information about your account.
+User Authentication & Verification:
+    - Register/login using UGA email only
+    - Email verification required via secure token link
+    - Session persists using localStorage
 
-For a registered user, we also have a dedicated add event tab, allowing quick and easy setup for our users to add events to our event hub. Users will be able
-to specify the event location, number of attendees, title, description, and an image URL to be displayed.
+User Dashboard:
 
-Instructions to launch the web page
-First, cd into backend and run the command node app.js. After running this command, you will see that the backend is connected.
-Secondly, cd out of backend and into frontend. Run the command npm run dev. With this, the frontend and backend are connected.
+  - Account Info – view/edit personal details, upload a profile picture
+  - My Events – view, edit, or delete events you’ve created
+  - Joined Events – view events you’ve RSVP’d to
+
+Event Functionality:
+
+Create events with:
+  - Title, description, date, time, location
+  Image URL and capacity
+
+Browse and filter events by:
+
+  - Top Events
+  - Newly Added
+  - Coming Up
+  - View full event details with host info and attendee count
+
+RSVP System: 
+
+  - RSVP/cancel RSVP (if authenticated)
+  - Capacity lock: RSVPs close when full
+  - One user = one RSVP per event
+
+Tech Stack
+
+  Frontend: 
+
+  - Next.js (App Router)
+  - React
+  - Tailwind CSS
+
+  Backend:
+
+  - Express.js
+  - MongoDB with Mongoose
+  - Nodemailer – email verification
+  - JWT – token-based session control
+
+Installation & Setup
+
+1. Clone the repo
+
+    - git clone https://github.com/Mater1212/TARDIS.git
+    - cd TARDIS
+
+2. Setup the backend
+
+    - cd backend
+    - npm install
+    - Create a .env file:
+    MONGO_URI=your_mongodb_connection_string
+    EMAIL_USER=your_email@uga.edu
+    EMAIL_PASS=your_email_password
+    - Run the backend: node app.js
+
+3. Setup the frontend
+
+    - cd frontend
+    - npm install
+    - npm run dev
+
+Project Structure
+
+/frontend
+    ├── components/
+    └── contexts/
+    └── src/app
+      ├── events/
+      ├── add-event/
+      ├── add-event/[id]
+      ├── login/
+      ├── signup/
+      ├── profile/
+      ├── check-email/
+      ├── verify/
+      ├── auth-view/
+  
+
+/backend
+  ├── models/
+  ├── routes/
+  └── app.js
